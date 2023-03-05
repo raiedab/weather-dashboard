@@ -58,6 +58,10 @@ function getWeather(cityName) {
         data.wind.speed
       )} m/s`;
 
+      // add searched city to search history array
+      searchHistory.push(cityName);
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
       // make API call to get 5-day forecast
       return fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${apiKey}`
@@ -80,10 +84,11 @@ function getWeather(cityName) {
         `;
         forecastEl.appendChild(forecastCard);
       }
+
       // update search history section
       updateSearchHistory();
-      if (searchHistory.length > 0) {
-        getWeather(searchHistory[searchHistory.length - 1]);
-      }
+    })
+    .catch((error) => {
+      console.log.error(error);
     });
 }
